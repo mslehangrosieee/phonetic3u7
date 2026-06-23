@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ms. Lê Hằng English - Premium Practice Suite</title>
+    <!-- Tailwind CSS For Dynamic UI Components -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background: linear-gradient(-45deg, #f1e9ff, #e2f1ff, #ffeef8, #e8f9f2);
+            background-size: 400% 400%;
+            animation: gradientAnimation 20s ease infinite;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Ambient Fluid Glow Animation (Hiệu ứng loang màu) */
+        @keyframes gradientAnimation {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .blob-glow-1 {
+            position: fixed; top: 10%; left: -10%; width: 500px; height: 500px;
+            background: radial-gradient(circle, rgba(168,85,247,0.25) 0%, rgba(255,255,255,0) 70%);
+            filter: blur(60px); z-index: -1; animation: floatBlob 12s ease-in-out infinite alternate;
+        }
+        .blob-glow-2 {
+            position: fixed; bottom: 10%; right: -10%; width: 600px; height: 600px;
+            background: radial-gradient(circle, rgba(45,212,191,0.25) 0%, rgba(255,255,255,0) 70%);
+            filter: blur(80px); z-index: -1; animation: floatBlob 16s ease-in-out infinite alternate-reverse;
+        }
+
+        @keyframes floatBlob {
+            0% { transform: translate(0px, 0px) scale(1); }
+            100% { transform: translate(50px, 40px) scale(1.15); }
+        }
+
+        /* Floating Space Elements Canvas overlay */
+        #particles-canvas {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none; z-index: 0;
+        }
+
+        .premium-card {
+            background: rgba(255, 255, 255, 0.92);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 2px solid rgba(255, 255, 255, 0.8);
+        }
+    </style>
+</head>
+<body class="text-slate-800 antialiased pb-28 relative">
+
+    <!-- Canvas For Hearts & Stars Interactive Particles -->
+    <canvas id="particles-canvas"></canvas>
+
+    <!-- Glowing fluid background circles -->
+    <div class="blob-glow-1"></div>
+    <div class="blob-glow-2"></div>
+
+    <!-- Brand Header Area -->
+    <header class="max-w-5xl w-full mx-auto pt-8 px-4 flex flex-col items-center relative z-10">
+        <div class="flex items-center gap-2.5 px-5 py-2 rounded-full bg-gradient-to-r from-purple-700 via-pink-600 to-indigo-700 text-white font-extrabold text-xs tracking-widest uppercase shadow-xl shadow-purple-600/30 transform hover:scale-105 transition-all">
+            <span>✨ LỚP HỌC TIẾNG ANH CHẤT LƯỢNG CAO - MS. LÊ HẰNG ENGLISH ✨</span>
+        </div>
+    </header>
+
+    <!-- Top Notice Alert Banner Box -->
+    <section class="max-w-5xl w-full mx-auto px-4 mt-5 relative z-10">
+        <div class="bg-gradient-to-br from-amber-50 to-amber-100 border-2 border-amber-400 rounded-3xl p-5 text-center text-xs md:text-sm text-amber-950 font-bold shadow-lg leading-relaxed relative overflow-hidden">
+            <div class="absolute -top-6 -left-6 w-12 h-12 bg-amber-400/20 rounded-full blur-xl"></div>
+            ⚠️ LỜI NHẮC CỰC KỲ QUAN TRỌNG TỪ CÔ HẰNG ⚠️<br>
+            Chỉ có đọc kỹ giải thích ngay sau mỗi câu, sau đó ghi lại từ vựng/cấu trúc mới vào vở để học thì mới thực sự giỏi lên.<br>
+            Làm cho xong mà không đọc giải thích hay đọc qua loa không ghi chép thì chỉ tốn thời gian vô ích!<br>
+            <span class="text-rose-600 text-sm font-extrabold block mt-1.5 animate-pulse">👇 KÉO TỚI ĐÂU, LÀM NGAY TỚI ĐÓ ! 👇</span>
+        </div>
+    </section>
+
+    <!-- Navigation Switcher System (Color Coded Tabs) -->
+    <nav class="max-w-5xl w-full mx-auto px-4 mt-6 relative z-10">
+        <div class="grid grid-cols-2 gap-4 p-2 bg-slate-900/10 backdrop-blur-md rounded-2xl border border-white/60 shadow-inner">
+            <button onclick="changeSectionTab('ex1')" id="tab-ex1" class="py-3.5 text-xs md:text-sm font-extrabold rounded-xl text-center transition-all bg-gradient-to-r from-purple-700 to-indigo-700 text-white shadow-xl shadow-purple-700/40">
+                🎯 PHẦN 1: Exercise 1 (Phát Âm -ed)
+            </button>
+            <button onclick="changeSectionTab('ex2')" id="tab-ex2" class="py-3.5 text-xs md:text-sm font-black rounded-xl text-center transition-all text-purple-950 hover:bg-white/70">
+                ⚡ PHẦN 2: Exercise 2 (Trọng Âm)
+            </button>
+        </div>
+    </nav>
+
+    <!-- Main Dynamic Feed Window -->
+    <main class="max-w-5xl w-full mx-auto px-4 mt-6 relative z-10">
+        <div class="premium-card rounded-3xl p-6 md:p-8 shadow-2xl border border-purple-200">
+            
+            <!-- Dynamic Colorful Indicator Header -->
+            <div class="mb-5 flex items-center gap-3">
+                <span id="header-icon" class="text-2xl p-2 bg-purple-200 rounded-xl text-purple-700 shadow-sm">🗣️</span>
+                <h2 id="exercise-main-title" class="text-purple-950 font-black text-sm md:text-base leading-relaxed">
+                    Exercise 1: Choose the word (A, B, C, or D) whose underlined part is pronounced differently from the others.
+                </h2>
+            </div>
+            
+            <!-- Dashed Rainbow Separator Line -->
+            <div class="h-[2px] bg-gradient-to-r from-purple-400 via-pink-400 to-teal-400 mb-8"></div>
+
+            <!-- Vertical Container for the Test Items -->
+            <div id="quiz-feed-wrapper" class="space-y-12">
+                <!-- JavaScript automatically renders detailed elements here -->
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Bottom Fixed Sticky Dynamic Scorebar Scoreboard -->
+    <div class="fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur-lg border-t-2 border-purple-200 py-4 px-6 flex justify-between items-center shadow-[0_-10px_35px_rgba(124,58,237,0.15)] z-50">
+        <div class="text-purple-950 font-extrabold text-sm md:text-base flex items-center gap-2 bg-purple-100/80 px-4 py-2 rounded-2xl border-2 border-purple-300">
+            🥇 <span class="text-slate-700">Điểm số của con:</span> <span id="footer-live-score" class="text-2xl font-black text-transparent bg-clip-text bg-gradient-to-r from-emerald-600 to-teal-600 ml-1">0</span>
+        </div>
+        <button onclick="alertFinishMessage()" class="bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600 active:scale-95 text-white font-black px-8 py-3 rounded-2xl flex items-center gap-2 shadow-xl shadow-emerald-500/30 transition-all text-xs md:text-sm uppercase tracking-wider">
+            Nộp Bài Về Cô Hằng 🚀
+        </button>
+    </div>
+
+    <!-- Program Execution Script Core Script -->
+    <script>
+        // --- 1. HTML5 Canvas Particles System (Stars and Hearts Animation) ---
+        const canvas = document.getElementById('particles-canvas');
+        const ctx = canvas.getContext('2d');
+        let particlesArray = [];
+        const shapesPool = ['★', '♥', '✨', '☁️'];
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        class BackgroundParticle {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = canvas.height + Math.random() * 100;
+                this.size = Math.random() * 14 + 10;
+                this.speedY = Math.random() * 0.6 + 0.2;
+                this.speedX = Math.sin(Math.random() * 2) * 0.3;
+                this.char = shapesPool[Math.floor(Math.random() * shapesPool.length)];
+                this.opacity = Math.random() * 0.4 + 0.1;
+                const colors = ['#a855f7', '#ec4899', '#3b82f6', '#14b8a6', '#eab308'];
+                this.color = colors[Math.floor(Math.random() * colors.length)];
+            }
+            update() {
+                this.y -= this.speedY;
+                this.x += this.speedX;
+                if (this.y < -20) {
+                    this.y = canvas.height + 20;
+                    this.x = Math.random() * canvas.width;
+                }
+            }
+            draw() {
+                ctx.globalAlpha = this.opacity;
+                ctx.font = `${this.size}px Arial`;
+                ctx.fillStyle = this.color;
+                ctx.fillText(this.char, this.x, this.y);
+            }
+        }
+
+        function initParticles() {
+            particlesArray = [];
+            for (let i = 0; i < 35; i++) {
+                particlesArray.push(new BackgroundParticle());
+            }
+        }
+        function animateParticles() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            for (let i = 0; i < particlesArray.length; i++) {
+                particlesArray[i].update();
+                particlesArray[i].draw();
+            }
+            requestAnimationFrame(animateParticles);
+        }
+        initParticles();
+        animateParticles();
+
+
+        // --- 2. Advanced Audio Feedback System ---
+        const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        function playSoundNotification(success) {
+            if (!audioContext) return;
+            const osc = audioContext.createOscillator();
+            const gain = audioContext.createGain();
+            osc.connect(gain); gain.connect(audioContext.destination);
+            
+            if (success) {
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(587.33, audioContext.currentTime); 
+                osc.frequency.setValueAtTime(880.00, audioContext.currentTime + 0.08); 
+                gain.gain.setValueAtTime(0.12, audioContext.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.3);
+                osc.start(); osc.stop(audioContext.currentTime + 0.3);
+            } else {
+                osc.type = 'triangle';
+                osc.frequency.setValueAtTime(150, audioContext.currentTime);
+                gain.gain.setValueAtTime(0.18, audioContext.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.25);
+                osc.start(); osc.stop(audioContext.currentTime + 0.25);
+            }
+        }
+
+
+        // --- 3. Complete Updated Database (Exercise 1 & Exercise 2) ---
+        const exerciseData = {
+            ex1: [
+                { id: 1, text: "Chọn từ có phần gạch chân phát âm khác với các từ còn lại:", options: { A: "devoted", B: "suggested", C: "provided", D: "wished" }, answer: "D", exp: "👉 <strong>wished</strong> phát âm là đuôi /t/ (/wɪʃt/) vì kết thúc bằng âm vô thanh /ʃ/.<br>👉 Các từ còn lại phát âm là /ɪd/ do kết thúc bằng âm /t/ hoặc /d/: <em>devoted</em> (/dɪˈvəʊtɪd/), <em>suggested</em> (/səˈdʒestɪd/), <em>provided</em> (/prəˈvaɪdɪd/)." },
+                { id: 2, text: "Chọn từ có phần gạch chân phát âm khác với các từ còn lại:", options: { A: "played", B: "learned", C: "shared", D: "decided" }, answer: "D", exp: "👉 <strong>decided</strong> phát âm đuôi là /ɪd/ (/dɪˈsaɪdɪd/) vì kết thúc bằng âm /d/.<br>👉 Các từ còn lại phát âm là đuôi /d/ vì kết thúc bằng các âm hữu thanh: <em>played</em> (/pleɪd/), <em>learned</em> (/lɜːnd/), <em>shared</em> (/ʃeəd/)." },
+                { id: 3, text: "Chọn từ có phần gạch chân phát âm khác với các từ còn lại:", options: { A: "worried", B: "donated", C: "collected", D: "naked" }, answer: "A", exp: "👉 <strong>worried</strong> phát âm đuôi là /d/ (/ˈwʌrid/).<br>👉 Các từ còn lại phát âm là /ɪd/: <em>donated</em> (/dəʊˈneɪtɪd/), <em>collected</em> (/kəˈlektɪd/). Riêng từ <strong>naked</strong> (/ˈneɪkɪd/) là một <u>tính từ đặc biệt</u> luôn phát âm là /ɪd/ bất kể quy tắc thông thường." },
+                { id: 4, text: "Chọn từ có phần gạch chân phát âm khác với các từ còn lại:", options: { A: "invited", B: "loved", C: "used", D: "cleaned" }, answer: "A", exp: "👉 <strong>invited</strong> phát âm đuôi là /ɪd/ (/ɪnˈvaɪtɪd/) vì kết thúc bằng âm /t/.<br>👉 Các từ còn lại phát âm đuôi là /d/ vì từ kết thúc bằng các phụ âm hữu thanh: <em>loved</em> (/lʌvd/), <em>used</em> (/juːzd/), <em>cleaned</em> (/kliːnd/)." },
+                { id: 5, text: "Chọn từ có phần gạch chân phát âm khác với các từ còn lại:", options: { A: "wanted", B: "danced", C: "needed", D: "visited" }, answer: "B", exp: "👉 <strong>danced</strong> phát âm đuôi là /t/ (/dɑːnst/) vì từ kết thúc bằng âm vô thanh /s/.<br>👉 Các từ còn lại phát âm đuôi là /ɪd/: <em>wanted</em> (/ˈwɒntɪd/), <em>needed</em> (/ˈniːdɪd/), <em>visited</em> (/ˈvɪzɪtɪd/)." },
+                { id: 6, text: "Chọn từ có phần gạch chân phát âm khác với các từ còn lại:", options: { A: "asked", B: "completed", C: "finished", D: "laughed" }, answer: "B", exp: "👉 <strong>completed</strong> phát âm đuôi là /ɪd/ (/kəmˈpliːtɪd/) vì kết thúc bằng âm /t/.<br>👉 Các từ còn lại phát âm đuôi là /t/ vì kết thúc bằng phụ âm vô thanh: <em>asked</em> (/ɑːskt/), <em>finished</em> (/ˈfɪnɪʃt/), <em>laughed</em> (/lɑːft/)." },
+                { id: 7, text: "Chọn từ có phần gạch chân phát âm khác với các từ còn lại:", options: { A: "worked", B: "requested", C: "interested", D: "demanded" }, answer: "A", exp: "👉 <strong>worked</strong> phát âm đuôi là /t/ (/wɜːkt/) vì từ kết thúc bằng âm vô thanh /k/.<br>👉 Các từ còn lại phát âm đuôi là /ɪd/: <em>requested</em> (/rɪˈkwestɪd/), <em>interested</em> (/ˈɪntrəstɪd/), <em>demanded</em> (/dɪˈmɑːndɪd/)." },
+                { id: 8, text: "Chọn từ có phần gạch chân phát âm khác với các từ còn lại:", options: { A: "started", B: "leaded", C: "launched", D: "corrected" }, answer: "C", exp: "👉 <strong>launched</strong> phát âm đuôi là /t/ (/lɔːntʃt/) vì kết thúc bằng phụ âm vô thanh /tʃ/.<br>👉 Các từ còn lại phát âm đuôi là /ɪd/: <em>started</em> (/ˈstɑːtɪd/), <em>leaded</em> (/ˈledɪd/), <em>corrected</em> (/kəˈrektɪd/)." },
+                { id: 9, text: "Chọn từ có phần gạch chân phát âm khác với các từ còn lại:", options: { A: "rested", B: "hiked", C: "dressed", D: "advanced" }, answer: "A", exp: "👉 <strong>rested</strong> phát âm đuôi là /ɪd/ (/ˈrestɪd/) vì kết thúc bằng âm /t/.<br>👉 Các từ còn lại phát âm đuôi là /t/ vì đều kết thúc bằng âm vô thanh: <em>hiked</em> (/haɪkt/), <em>dressed</em> (/drest/), <em>advanced</em> (/ədˈvɑːnst/)." },
+                { id: 10, text: "Chọn từ có phần gạch chân phát âm khác với các từ còn lại:", options: { A: "filled", B: "smelled", C: "caused", D: "missed" }, answer: "D", exp: "👉 <strong>missed</strong> phát âm đuôi là /t/ (/mɪst/) vì kết thúc bằng phụ âm vô thanh /s/.<br>👉 Các từ còn lại phát âm đuôi là /d/ vì kết thúc bằng các phụ âm hữu thanh: <em>filled</em> (/fɪld/), <em>smelled</em> (/smeld/), <em>caused</em> (/kɔːzd/)." },
+                { id: 11, text: "Chọn từ có phần gạch chân phát âm khác với các từ còn lại:", options: { A: "looked", B: "kissed", C: "called", D: "stopped" }, answer: "C", exp: "👉 <strong>called</strong> phát âm đuôi là /d/ (/kɔːld/) vì kết thúc bằng phụ âm hữu thanh /l/.<br>👉 Các từ còn lại phát âm đuôi là /t/ vì kết thúc bằng âm vô thanh: <em>looked</em> (/lʊkt/), <em>kissed</em> (/kɪst/), <em>stopped</em> (/stɒpt/)." },
+                { id: 12, text: "Chọn từ có phần gạch chân phát âm khác với các từ còn lại:", options: { A: "reserved", B: "borrowed", C: "attracted", D: "happened" }, answer: "C", exp: "👉 <strong>attracted</strong> phát âm đuôi là /ɪd/ (/əˈtræktɪd/) vì kết thúc bằng âm /t/.<br>👉 Các từ còn lại phát âm đuôi là /d/ vì kết thúc bằng nguyên âm hoặc phụ âm hữu thanh: <em>reserved</em> (/rɪˈzɜːvd/), <em>borrowed</em> (/ˈbɒrəʊd/), <em>happened</em> (/ˈhæpənd/)." },
+                { id: 13, text: "Chọn từ có phần gạch chân phát âm khác với các từ còn lại:", options: { A: "offered", B: "enjoyed", C: "followed", D: "helped" }, answer: "D", exp: "👉 <strong>helped</strong> phát âm đuôi là /t/ (/helpt/) vì kết thúc bằng phụ âm vô thanh /p/.<br>👉 Các từ còn lại phát âm đuôi là /d/ vì kết thúc bằng nguyên âm hoặc phụ âm hữu thanh: <em>offered</em> (/ˈɒfəd/), <em>enjoyed</em> (/ɪnˈdʒɔɪd/), <em>followed</em> (/ˈfɒləʊd/)." },
+                { id: 14, text: "Chọn từ có phần gạch chân phát âm khác với các từ còn lại:", options: { A: "thanked", B: "parked", C: "listened", D: "booked" }, answer: "C", exp: "👉 <strong>listened</strong> phát âm đuôi là /d/ (/ˈlɪsnd/) vì kết thúc bằng âm hữu thanh /n/.<br>👉 Các từ còn lại phát âm đuôi là /t/ vì kết thúc bằng phụ âm vô thanh /k/: <em>thanked</em> (/θæŋkt/), <em>parked</em> (/pɑːkt/), <em>booked</em> (/bʊkt/)." },
+                { id: 15, text: "Chọn từ có phần gạch chân phát âm khác với các từ còn lại:", options: { A: "lived", B: "talked", C: "watered", D: "opened" }, answer: "B", exp: "👉 <strong>talked</strong> phát âm đuôi là /t/ (/tɔːkt/) vì kết thúc bằng âm vô thanh /k/.<br>👉 Các từ còn lại phát âm đuôi là /d/ vì kết thúc bằng phụ âm hoặc nguyên âm hữu thanh: <em>lived</em> (/lɪvd/), <em>watered</em> (/ˈwɔːtəd/), <em>opened</em> (/ˈəʊpənd/)." }
+            ],
+            ex2: [
+                { id: 1, text: "Chọn từ có trọng âm chính khác biệt so với các từ còn lại:", options: { A: "collect", B: "donate", C: "provide", D: "tutor" }, answer: "D", exp: "👉 <strong>tutor</strong> có trọng âm nhấn vào âm tiết thứ 1 (/ˈtjuːtər/).<br>👉 Các từ còn lại là động từ có trọng âm nhấn vào âm tiết thứ 2: <em>collect</em> (/kəˈlekt/), <em>donate</em> (/dəʊˈneɪt/), <em>provide</em> (/prəˈvaɪd/)." },
+                { id: 2, text: "Chọn từ có trọng âm chính khác biệt so với các từ còn lại:", options: { A: "organization", B: "volunteer", C: "opportunity", D: "activity" }, answer: "D", exp: "👉 <strong>activity</strong> nhấn trọng âm vào âm tiết thứ 2 (/ækˈtɪvəti/).<br>👉 Các từ còn lại có trọng âm chính nhấn ở các âm tiết sau: <em>volunteer</em> (nhấn âm 3 - /ˌvɒlənˈtɪər/), <em>opportunity</em> (nhấn âm 3 - /ˌɒpəˈtjuːnəti/), <em>organization</em> (nhấn âm 4 - /ˌɔːɡənaɪˈzeɪʃn/)." },
+                { id: 3, text: "Chọn từ có trọng âm chính khác biệt so với các từ còn lại:", options: { A: "project", B: "enjoy", C: "similar", D: "include" }, answer: "C", exp: "👉 <strong>similar</strong> là tính từ có trọng âm rơi vào âm tiết thứ 1 (/ˈsɪmələr/).<br>👉 Các động từ còn lại đều có trọng âm rơi vào âm tiết thứ 2: <em>enjoy</em> (/ɪnˈdʒɔɪ/), <em>include</em> (/ɪnˈkluːd/), và <em>project</em> (khi đóng vai trò động từ: /prəˈdʒekt/)." },
+                { id: 4, text: "Chọn từ có trọng âm chính khác biệt so với các từ còn lại:", options: { A: "elderly", B: "primary", C: "volunteer", D: "charity" }, answer: "C", exp: "👉 <strong>volunteer</strong> nhận trọng âm chính rơi trực tiếp vào âm đuôi '-eer', tức là âm tiết thứ 3 (/ˌvɒlənˈtɪər/).<br>👉 Các từ còn lại đều có trọng âm rơi vào âm tiết thứ 1: <em>elderly</em> (/ˈeldəli/), <em>primary</em> (/ˈpraɪməri/), <em>charity</em> (/ˈtʃærəti/)." },
+                { id: 5, text: "Chọn từ có trọng âm chính khác biệt so với các từ còn lại:", options: { A: "money", B: "collect", C: "tutor", D: "homeless" }, answer: "B", exp: "👉 <strong>collect</strong> là động từ 2 âm tiết, trọng âm rơi vào âm tiết thứ 2 (/kəˈlekt/).<br>👉 Các từ còn lại là danh từ/tính từ 2 âm tiết, trọng âm nhấn vào âm tiết thứ 1: <em>money</em> (/ˈmʌni/), <em>tutor</em> (/ˈtjuːtər/), <em>homeless</em> (/ˈhəʊmləs/)." },
+                { id: 6, text: "Chọn từ có trọng âm chính khác biệt so với các từ còn lại:", options: { A: "develop", B: "mountainous", C: "teenager", D: "orphanage" }, answer: "A", exp: "👉 <strong>develop</strong> có trọng âm nhấn vào âm tiết thứ 2 (/dɪˈveləp/).<br>👉 Các từ còn lại có trọng âm nhấn vào âm tiết thứ 1: <em>mountainous</em> (/ˈmaʊntənəs/), <em>teenager</em> (/ˈtiːneɪdʒər/), <em>orphanage</em> (/ˈɔːfənɪdʒ/)." },
+                { id: 7, text: "Chọn từ có trọng âm chính khác biệt so với các từ còn lại:", options: { A: "donate", B: "rubbish", C: "sugar", D: "garden" }, answer: "A", exp: "👉 <strong>donate</strong> là động từ mang nghĩa quyên góp, trọng âm rơi vào âm tiết thứ 2 (/dəʊˈneɪt/).<br>👉 Các từ còn lại là danh từ 2 âm tiết, trọng âm rơi vào âm tiết thứ 1: <em>rubbish</em> (/ˈrʌbɪʃ/), <em>sugar</em> (/ˈʃʊɡər/), <em>garden</em> (/ˈɡɑːdn/)." },
+                { id: 8, text: "Chọn từ có trọng âm chính khác biệt so với các từ còn lại:", options: { A: "summer", B: "water", C: "student", D: "receive" }, answer: "D", exp: "👉 <strong>receive</strong> là động từ 2 âm tiết, trọng âm nhấn rơi vào âm tiết thứ 2 (/rɪˈsiːv/).<br>👉 Các từ còn lại đều có trọng âm nhấn vào âm tiết thứ 1: <em>summer</em> (/ˈsʌmər/), <em>water</em> (/ˈwɔːtər/), <em>student</em> (/ˈstjuːdnt/)." },
+                { id: 9, text: "Chọn từ có trọng âm chính khác biệt so với các từ còn lại:", options: { A: "exchange", B: "homeless", C: "protect", D: "repair" }, answer: "B", exp: "👉 <strong>homeless</strong> là tính từ chứa hậu tố '-less' không làm thay đổi trọng âm, nhấn vào âm tiết thứ 1 (/ˈhəʊmləs/).<br>👉 Các từ còn lại là động từ có trọng âm rơi vào âm tiết thứ 2: <em>exchange</em> (/ɪksˈtʃeɪndʒ/), <em>protect</em> (/prəˈtekt/), <em>repair</em> (/rɪˈpeər/)." },
+                { id: 10, text: "Chọn từ có trọng âm chính khác biệt so với các từ còn lại:", options: { A: "environment", B: "community", C: "recycle", D: "rubbish" }, answer: "D", exp: "👉 <strong>rubbish</strong> là danh từ 2 âm tiết, trọng âm nhấn vào âm tiết thứ 1 (/ˈrʌbɪʃ/).<br>👉 Các từ còn lại đều có vị trí trọng âm rơi vào âm tiết thứ 2: <em>environment</em> (/ɪnˈvaɪrənmənt/), <em>community</em> (/kəˈmjuːnəti/), <em>recycle</em> (/ˌriːˈsaɪkl/)." }
+            ]
+        };
+
+        let currentActiveSection = 'ex1';
+        let studentAccumulatedScore = 0;
+        let loggedExamProgress = { ex1: {}, ex2: {} };
+
+        function changeSectionTab(sectionKey) {
+            currentActiveSection = sectionKey;
+            
+            const btn1 = document.getElementById('tab-ex1');
+            const btn2 = document.getElementById('tab-ex2');
+            const headerText = document.getElementById('exercise-main-title');
+            const headerIcon = document.getElementById('header-icon');
+
+            if (sectionKey === 'ex1') {
+                btn1.className = "py-3.5 text-xs md:text-sm font-extrabold rounded-xl text-center transition-all bg-gradient-to-r from-purple-700 to-indigo-700 text-white shadow-xl shadow-purple-700/40";
+                btn2.className = "py-3.5 text-xs md:text-sm font-black rounded-xl text-center transition-all text-purple-950 hover:bg-white/70";
+                headerText.innerText = "Exercise 1: Choose the word (A, B, C, or D) whose underlined part is pronounced differently from the others.";
+                headerIcon.innerText = "🗣️";
+            } else {
+                btn2.className = "py-3.5 text-xs md:text-sm font-extrabold rounded-xl text-center transition-all bg-gradient-to-r from-purple-700 to-indigo-700 text-white shadow-xl shadow-purple-700/40";
+                btn1.className = "py-3.5 text-xs md:text-sm font-black rounded-xl text-center transition-all text-purple-950 hover:bg-white/70";
+                headerText.innerText = "Exercise 2: Choose the word (A, B, C, or D) whose main stress is different from the others in the group.";
+                headerIcon.innerText = "⚡";
+            }
+
+            renderQuizListFeed();
+        }
+
+        function renderQuizListFeed() {
+            const feedContainer = document.getElementById('quiz-feed-wrapper');
+            feedContainer.innerHTML = '';
+
+            const activeList = exerciseData[currentActiveSection];
+
+            activeList.forEach((questionObj, index) => {
+                const questionContainerCard = document.createElement('div');
+                questionContainerCard.className = "pb-8 border-b border-purple-200 last:border-none";
+
+                // Header text layout
+                const blockHeader = document.createElement('div');
+                blockHeader.className = "flex items-start gap-3 mb-4";
+                blockHeader.innerHTML = `
+                    <span class="bg-gradient-to-r from-purple-700 to-indigo-700 text-white text-[11px] font-black px-3.5 py-1.5 rounded-full shrink-0 mt-0.5 shadow-md shadow-purple-700/20">CÂU ${index + 1}</span>
+                    <span class="font-bold text-slate-900 text-sm md:text-base leading-relaxed">${questionObj.text}</span>
+                `;
+                questionContainerCard.appendChild(blockHeader);
+
+                // Option items wrapper grid (2x2 grid)
+                const buttonsGrid = document.createElement('div');
+                buttonsGrid.className = "grid grid-cols-1 md:grid-cols-2 gap-4";
+
+                const historicalState = loggedExamProgress[currentActiveSection][index];
+
+                Object.entries(questionObj.options).forEach(([key, value]) => {
+                    const optionBtn = document.createElement('button');
+                    
+                    // High Contrast Border State
+                    optionBtn.className = "option-card flex items-center justify-between p-4 bg-white border-2 border-purple-300 rounded-2xl text-left text-sm font-bold text-slate-800 hover:bg-purple-50 hover:border-purple-600 transition-all shadow-md shadow-purple-900/5";
+                    
+                    let statusRadioNode = `<span class="w-5 h-5 rounded-full border-2 border-purple-400 bg-white flex items-center justify-center shrink-0"></span>`;
+
+                    if (historicalState) {
+                        optionBtn.disabled = true; // Lock action
+                        if (key === questionObj.answer) {
+                            // Correct Choice - Ultra Bold Emerald Border
+                            optionBtn.className = "option-card flex items-center justify-between p-4 bg-emerald-50 border-[3px] border-emerald-600 rounded-2xl text-left text-sm font-extrabold text-emerald-950 shadow-md shadow-emerald-600/10";
+                            statusRadioNode = `<span class="w-5 h-5 rounded-full bg-emerald-600 flex items-center justify-center text-white text-[11px] font-black shrink-0">✓</span>`;
+                        } else if (historicalState.selected === key) {
+                            // Wrong Selection - Ultra Bold Rose Border
+                            optionBtn.className = "option-card flex items-center justify-between p-4 bg-rose-50 border-[3px] border-rose-600 rounded-2xl text-left text-sm font-extrabold text-rose-950 shadow-md shadow-rose-600/10";
+                            statusRadioNode = `<span class="w-5 h-5 rounded-full bg-rose-600 flex items-center justify-center text-white text-[11px] font-black shrink-0">✕</span>`;
+                        } else {
+                            // Non-selected items state after answering
+                            optionBtn.className = "option-card flex items-center justify-between p-4 bg-slate-100 border-2 border-slate-200 opacity-40 rounded-2xl text-left text-sm font-semibold text-slate-400 shadow-none";
+                            statusRadioNode = `<span class="w-5 h-5 rounded-full border border-slate-300 bg-slate-50 shrink-0"></span>`;
+                        }
+                    } else {
+                        optionBtn.onclick = () => processStudentSelection(index, key);
+                    }
+
+                    optionBtn.innerHTML = `<span><strong class="text-purple-700 font-black text-base mr-2">${key}.</strong> ${value}</span> ${statusRadioNode}`;
+                    buttonsGrid.appendChild(optionBtn);
+                });
+
+                questionContainerCard.appendChild(buttonsGrid);
+
+                // High-Fidelity Scientific Explanation Area
+                if (historicalState) {
+                    const structuralExpBox = document.createElement('div');
+                    structuralExpBox.className = "mt-4 p-4 md:p-5 bg-gradient-to-br from-purple-50 to-indigo-50 border-2 border-purple-300 rounded-2xl shadow-md relative overflow-hidden animate-fadeIn";
+                    structuralExpBox.innerHTML = `
+                        <div class="flex items-center gap-2 font-black text-purple-950 uppercase text-xs mb-2 tracking-wider">
+                            <span class="text-base">💡</span> GIẢI THÍCH CHI TIẾT TỪ CÔ LÊ HẰNG:
+                        </div>
+                        <div class="text-slate-800 text-xs md:text-sm leading-relaxed space-y-1 pl-6 border-l-4 border-purple-500 font-semibold">
+                            ${questionObj.exp}
+                        </div>
+                    `;
+                    questionContainerCard.appendChild(structuralExpBox);
+                }
+
+                feedContainer.appendChild(questionContainerCard);
+            });
+        }
+
+        function processStudentSelection(index, optionChar) {
+            if (loggedExamProgress[currentActiveSection][index]) return;
+
+            const referenceQuestion = exerciseData[currentActiveSection][index];
+            const isCorrect = (optionChar === referenceQuestion.answer);
+
+            if (isCorrect) {
+                studentAccumulatedScore += 10;
+            }
+
+            loggedExamProgress[currentActiveSection][index] = { selected: optionChar, isCorrect: isCorrect };
+            document.getElementById('footer-live-score').innerText = studentAccumulatedScore;
+            
+            playSoundNotification(isCorrect);
+            renderQuizListFeed();
+        }
+
+        function alertFinishMessage() {
+            alert(`🎉 Chúc mừng con đã hoàn thành xuất sắc bài tập của Ms. Lê Hằng!\n🏆 Tổng điểm con đạt được: ${studentAccumulatedScore} điểm.`);
+        }
+
+        // Initialize application on screen load
+        window.onload = () => {
+            renderQuizListFeed();
+        };
+    </script>
+</body>
+</html>
